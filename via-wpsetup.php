@@ -4,7 +4,7 @@
  * Plugin Name:       Foundations
  * Plugin URI:        https://github.com/viastudios/via-wpsetup/
  * Description:       Sets Wordpress up in a clean and presentable state.
- * Version:           1.0.2
+ * Version:           1.0.3
  * Author:            Via Studios
  * Author URI:        https://viastudios.co.uk/
  * Text Domain:       via-wpsetup
@@ -27,15 +27,7 @@ if( ! class_exists( 'Github_Updater' ) ){
 $updater = new Github_Updater( __FILE__ );
 $updater->set_username( 'viastudios' );
 $updater->set_repository( 'via-wpsetup' );
-/*	$updater->authorize( 'abcdefghijk1234567890' ); // Your auth code goes here for private repos */
 $updater->initialize();
-
-/**
- * Current plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
- */
-define( 'via_wpsetup_VERSION', '1.0.2' );
 
 /**
  * The code that runs during plugin activation.
@@ -64,6 +56,7 @@ register_deactivation_hook( __FILE__, 'deactivate_via_wpsetup' );
  */
 
 add_action( 'login_head', 'via_wpsetup_login_css' );								// Style the login page
+add_action( 'admin_head', 'via_wpsetup_admin_css' );								// Style the admin area
 add_action( 'wp_dashboard_setup', 'via_wpsetup_remove_dashboard_widgets' );			// Remove default widgets from dashboard
 add_action( 'wp_before_admin_bar_render', 'via_wpsetup_remove_admin_bar_links' );	// Remove item(s) from admin bar
 
@@ -157,7 +150,13 @@ function via_wpsetup_remove_wp_widget_recent_comments_style() { // remove inject
 }
 
 function via_wpsetup_login_css() {
-	echo '<link rel="stylesheet" href="' . plugins_url( 'admin/css/via-wpsetup-admin.css', __FILE__ ) . '">'; // I couldn't get wp_enqueue_style to work :(
+	wp_register_style( 'login-styles', plugins_url( 'admin/css/via-wpsetup-login.css', __FILE__ ) ); // Register my custom stylesheet
+	wp_enqueue_style( 'login-styles' ); // Load my custom stylesheet
+}
+
+function via_wpsetup_admin_css() {
+	wp_register_style( 'custom-admin-styles', plugins_url( 'admin/css/via-wpsetup-admin.css', __FILE__ ) ); // Register my custom stylesheet
+	wp_enqueue_style( 'custom-admin-styles' ); // Load my custom stylesheet
 }
 
 function via_wpsetup_admin_footer() {

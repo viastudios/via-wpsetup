@@ -63,6 +63,12 @@ class Github_Updater {
                 $response['zipball_url'] = add_query_arg( 'access_token', $this->authorize_token, $response['zipball_url'] ); // Update our zip url with token
             }
 
+            $readme_uri = sprintf( 'https://raw.githubusercontent.com/%s/%s/master/README.md', $this->username, $this->repository );
+
+            if( !empty($readme_uri) ){
+                $response['Readme'] = wp_remote_retrieve_body( wp_remote_get( $readme_uri ) );
+            }
+
             $this->github_response = $response; // Set it to our property
         }
     }
@@ -112,16 +118,16 @@ class Github_Updater {
 
                 $this->get_repository_info(); // Get our repo info
 
+                // We're going to parse the GitHub markdown release notes, include the parser
+                require_once( plugin_dir_path( __FILE__ ) . "Parsedown.php" );
+
                 // Set it to an array
                 $plugin = array(
                     'name'              => $this->plugin["Name"],
                     'slug'              => $this->basename,
-                    'requires'          => '3.3',
-                    'tested'            => '4.4.1',
-                    'rating'            => '100.0',
-                    'num_ratings'       => '10823',
-                    'downloaded'        => '14249',
-                    'added'             => '2016-01-05',
+                    'requires'          => '4.0',
+                    'tested'            => '4.9.4',
+                    'added'             => '2018-02-20',
                     'version'           => $this->github_response['tag_name'],
                     'author'            => $this->plugin["AuthorName"],
                     'author_profile'    => $this->plugin["AuthorURI"],
@@ -129,8 +135,12 @@ class Github_Updater {
                     'homepage'          => $this->plugin["PluginURI"],
                     'short_description' => $this->plugin["Description"],
                     'sections'          => array(
-                        'Description'   => $this->plugin["Description"],
-                        'Updates'       => $this->github_response['body'],
+                        'Description'   => class_exists( "Parsedown" )
+                                            ? Parsedown::instance()->parse( $this->github_response['Readme'] )
+                                            : $this->github_response['Readme'],
+                        'Updates'       => class_exists( "Parsedown" )
+                                            ? '<h1>' . $this->github_response['name'] . '</h1>' . Parsedown::instance()->parse( $this->github_response['body'] )
+                                            : $this->github_response['body'],
                     ),
                     'download_link'     => $this->github_response['zipball_url']
                 );

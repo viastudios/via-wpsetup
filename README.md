@@ -1,12 +1,14 @@
 # Foundations (via-wpsetup)
-Foundation plugin to setup Wordpress the way we like it.
+Use this plugin to setup Wordpress in a more professional, cleaner and simpler manner.
+Get rid of the bloated code WP by default puts in the header area and clean up the backend removing unnecessary hurdles from the users.
 
 ## What this plugin can do...
 
 ### Admin area
 - Remove 'Howdy' for 'Welcome', looks more professional (v1.0.0)
 - Remove Wordpress logo from top admin bar (v1.0.0)
-- Add login.css to spruce up the login (v1.0.0)
+- Add admin.css to spruce up the login (v1.0.3)
+- Add login.css to spruce up the login (v1.0.3)
 - Replace the message in the admin footer for our custom message (v1.0.0)
 - replace the WP logo for the site title on loing page (v1.0.0)
 - Set the login URL to the homepage rather that Wordpress (v1.0.0)
