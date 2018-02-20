@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       Foundations
  * Description:       Sets Wordpress up in a clean and presentable state.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Via Studios
  * Author URI:        https://viastudios.co.uk/
  * Text Domain:       via-wpsetup
@@ -15,11 +15,26 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Currently plugin version.
+ * Look for the version number and update if necessary
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'via_wpsetup_VERSION', '1.0.0' );
+if( ! class_exists( 'Github_Updater' ) ){
+	include_once( plugin_dir_path( __FILE__ ) . 'updater.php' );
+}
+
+$updater = new Github_Updater( __FILE__ );
+$updater->set_username( 'viastudios' );
+$updater->set_repository( 'via-wpsetup' );
+/*	$updater->authorize( 'abcdefghijk1234567890' ); // Your auth code goes here for private repos */
+$updater->initialize();
+
+/**
+ * Current plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Rename this for your plugin and update it as you release new versions.
+ */
+define( 'via_wpsetup_VERSION', '1.0.1' );
 
 /**
  * The code that runs during plugin activation.
