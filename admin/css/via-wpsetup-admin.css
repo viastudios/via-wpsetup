@@ -1,0 +1,92 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+body.login {
+	background: white;
+}
+
+#login {
+	width: 100%;
+	max-width: 380px;
+	padding: 20vh 20px 0;
+	position: relative;
+}
+
+	#login h1 a {
+		background: none;
+		text-indent: 0;
+		font-size: unset;
+		line-height: normal;
+		width: auto;
+		letter-spacing: 2px;
+		color:#72777c;
+		height: auto;
+	}
+
+	#login .message,
+	#login #login_error {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		background: #f5f5f5;
+		box-shadow: none;
+		text-align: center;
+	}
+
+	#login #login_error {
+		border: 0;
+		background: #ff623a;
+		color: white;
+	}
+
+	#login #login_error a {
+		color: white;
+	}
+
+	#login form .forgetmenot {
+		margin-bottom: 20px;
+	}
+
+.login form {
+	box-shadow: none;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+	.login form .input, .login form input[type=checkbox], .login input[type=text], .login input[type=checkbox] {
+		background: #f5f5f5;
+		padding: 10px;
+		box-shadow: none;
+		border: 0;
+	}
+
+	.login form input[type=checkbox] {
+		border: 1px solid #ddd;
+	}
+
+	.login form .forgetmenot, .login form .submit {
+		float: none;
+	}
+
+	.login form .button-primary {
+		width: 100%;
+	}
+
+.wp-core-ui .button-primary {
+	border: 0;
+	box-shadow: none;
+	text-shadow: none;
+}
+
+.login.wp-core-ui .button.button-large {
+	padding: 15px;
+	height: auto;
+	line-height: auto;
+}
+
+.login #nav, .login #backtoblog {
+	padding: 0;
+}
