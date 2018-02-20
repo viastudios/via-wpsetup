@@ -2,8 +2,9 @@
 
 /**
  * Plugin Name:       Foundations
+ * Plugin URI:        https://github.com/viastudios/via-wpsetup/
  * Description:       Sets Wordpress up in a clean and presentable state.
- * Version:           1.0.1
+ * Version:           1.0.2
  * Author:            Via Studios
  * Author URI:        https://viastudios.co.uk/
  * Text Domain:       via-wpsetup
@@ -34,7 +35,7 @@ $updater->initialize();
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'via_wpsetup_VERSION', '1.0.1' );
+define( 'via_wpsetup_VERSION', '1.0.2' );
 
 /**
  * The code that runs during plugin activation.

@@ -54,6 +54,7 @@ body.login {
 	box-shadow: none;
 	padding-left: 0;
 	padding-right: 0;
+	border: 0;
 }
 
 	.login form .input, .login form input[type=checkbox], .login input[type=text], .login input[type=checkbox] {
