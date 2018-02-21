@@ -95,3 +95,13 @@ body.login {
 .login #nav, .login #backtoblog {
 	padding: 0;
 }
+
+.interim-login.login form {
+	margin: 0 auto;
+	width: calc(100% - 40px);
+}
+
+.interim-login.login #login .message,
+.interim-login.login #login #login_error {
+	width: auto;
+}

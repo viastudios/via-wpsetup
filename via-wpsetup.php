@@ -4,7 +4,7 @@
  * Plugin Name:       Foundations
  * Plugin URI:        https://github.com/viastudios/via-wpsetup/
  * Description:       Sets Wordpress up in a clean and presentable state.
- * Version:           1.0.3
+ * Version:           1.0.4
  * Author:            Via Studios
  * Author URI:        https://viastudios.co.uk/
  * Text Domain:       via-wpsetup
@@ -64,7 +64,7 @@ add_filter( 'the_generator', 'via_wpsetup_rss_version' );							// Remove WP ver
 add_filter( 'admin_footer_text', 'via_wpsetup_admin_footer' );						// We did this, let them know
 add_filter( 'login_headerurl', 'via_wpsetup_admin_login_url' );						// Changes admin logo link from wordpress.org to the site url
 add_filter( 'login_headertitle', 'via_wpsetup_admin_login_title' );					// Changing the alt text on the logo to show your site name
-add_filter( 'gettext', 'via_wpsetup_remove_howdy', 10, 3 );							// Change howdy to make it look more professional
+add_filter( 'admin_bar_menu', 'via_wpsetup_replace_howdy', 25 );					// Change howdy to make it look more professional
 add_filter( 'wp_head', 'via_wpsetup_remove_wp_widget_recent_comments_style', 1 );	// Remove injected css for recent comments widget
 add_filter( 'style_loader_src', 'via_wpsetup_remove_wp_ver_css_js', 9999 );			// Remove WP version from css
 add_filter( 'script_loader_src', 'via_wpsetup_remove_wp_ver_css_js', 9999 );		// Remove WP version from scripts
@@ -109,12 +109,14 @@ function via_wpsetup_remove_dashboard_widgets() {
 	unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary']);
 }
 
-function via_wpsetup_remove_howdy($translated, $text, $domain) {
-	if (!is_admin() || 'default' != $domain)
-		return $translated;
-	if (false !== strpos($translated, 'Howdy'))
-		return str_replace('Howdy', 'Welcome', $translated);
-	return $translated;
+function via_wpsetup_replace_howdy($wp_admin_bar) {
+	$my_account=$wp_admin_bar->get_node('my-account');
+	$newtitle = str_replace('Howdy,', 'Welcome', $my_account->title );
+	$wp_admin_bar->add_node(array(
+		'id' => 'my-account',
+		'title' => $newtitle,
+		)
+	);
 }
 
 function via_wpsetup_remove_admin_bar_links() {
