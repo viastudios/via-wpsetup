@@ -71,6 +71,7 @@ add_filter( 'script_loader_src', 'via_wpsetup_remove_wp_ver_css_js', 9999 );		//
 add_filter( 'post_thumbnail_html', 'via_wpsetup_remove_img_dimensions', 10 );		// Filter out hard-coded width, height attributes on all images in WordPress. - https://gist.github.com/4557917 - for more information
 add_filter( 'get_avatar','via_wpsetup_remove_img_dimensions', 10 );					// Filter out hard-coded width, height attributes on all images in WordPress. - https://gist.github.com/4557917 - for more information
 add_filter( 'gallery_style', 'via_wpsetup_gallery_style' );							// Clean up gallery output in wp, remove injected CSS
+add_filter( 'upload_mimes', 'cc_mime_types' );										// Include alternate MIME types i.e SVG in the media uploader
 
 remove_filter( 'wp_head', 'via_wpsetup_remove_recent_comments_style', 1 );			// Remove injected CSS for recent comments widget
 remove_action( 'wp_head', 'feed_links_extra', 3 );									// category feeds
@@ -163,6 +164,11 @@ function via_wpsetup_admin_css() {
 
 function via_wpsetup_admin_footer() {
 	echo '<span id="footer-thankyou">Developed by <a href="//www.viastudios.co.uk/" target="_blank">Via Studios</a></span>. Built using <a href="http://upstatement.com/timber/" target="_blank">Timber</a> and <a href="http://sass-lang.com" target="_blank">Sass</a>.';
+}
+
+function cc_mime_types($mimes) {
+	$mimes['svg'] = 'image/svg+xml';
+	return $mimes;
 }
 
 function via_wpsetup_admin_login_url() {
