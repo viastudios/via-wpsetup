@@ -4,7 +4,7 @@
  * Plugin Name:       Foundations
  * Plugin URI:        https://github.com/viastudios/via-wpsetup/
  * Description:       Sets Wordpress up in a clean and presentable state.
- * Version:           1.0.5
+ * Version:           1.0.6
  * Author:            Via Studios
  * Author URI:        https://viastudios.co.uk/
  * Text Domain:       via-wpsetup
@@ -63,7 +63,7 @@ add_action( 'wp_before_admin_bar_render', 'via_wpsetup_remove_admin_bar_links' )
 add_filter( 'the_generator', 'via_wpsetup_rss_version' );							// Remove WP version from RSS
 add_filter( 'admin_footer_text', 'via_wpsetup_admin_footer' );						// We did this, let them know
 add_filter( 'login_headerurl', 'via_wpsetup_admin_login_url' );						// Changes admin logo link from wordpress.org to the site url
-add_filter( 'login_headertitle', 'via_wpsetup_admin_login_title' );					// Changing the alt text on the logo to show your site name
+add_filter( 'login_headertext', 'via_wpsetup_admin_login_title' );					// Changing the alt text on the logo to show your site name
 add_filter( 'admin_bar_menu', 'via_wpsetup_replace_howdy', 25 );					// Change howdy to make it look more professional
 add_filter( 'wp_head', 'via_wpsetup_remove_wp_widget_recent_comments_style', 1 );	// Remove injected css for recent comments widget
 add_filter( 'style_loader_src', 'via_wpsetup_remove_wp_ver_css_js', 9999 );			// Remove WP version from css
