@@ -13,7 +13,8 @@ Get rid of the bloated code WP by default puts in the header area and clean up t
 - replace the WP logo for the site title on loing page (v1.0.0)
 - Set the login URL to the homepage rather that Wordpress (v1.0.0)
 - Remove basic dashboard widgets (v1.0.0)
-- Add alternate MIME types to media uploader (z1.0.5)
+- Add alternate MIME types to media uploader (v1.0.5)
+- Style the admin email confirm box (v1.0.6)
 
 ### Front end
 - Remove wordpress default WYSIWYG image dimensions (v1.0.0)
