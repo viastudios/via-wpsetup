@@ -79,6 +79,17 @@ body.login {
 		width: 100%;
 	}
 
+.login .admin-email__actions .button-primary {
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+}
+
+.login .admin-email__actions-primary .button.button-large {
+	margin-bottom: 8px;
+	width: 100%;
+	text-align: center;
+}
+
 .wp-core-ui .button-primary {
 	border: 0;
 	box-shadow: none;
