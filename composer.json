@@ -1,0 +1,15 @@
+{
+    "name": "viastudios/via-wpsetup",
+    "keywords": [
+        "wordpress",
+        "plugin"
+    ],
+    "homepage": "https://github.com/viastudios/via-wpsetup",
+    "authors": [
+        {
+            "name": "Paul Lowry",
+            "email": "paul@viastudios.co.uk"
+        }
+    ],
+    "type": "wordpress-plugin"
+}
