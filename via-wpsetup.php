@@ -72,6 +72,7 @@ add_filter( 'post_thumbnail_html', 'via_wpsetup_remove_img_dimensions', 10 );		/
 add_filter( 'get_avatar','via_wpsetup_remove_img_dimensions', 10 );					// Filter out hard-coded width, height attributes on all images in WordPress. - https://gist.github.com/4557917 - for more information
 add_filter( 'gallery_style', 'via_wpsetup_gallery_style' );							// Clean up gallery output in wp, remove injected CSS
 add_filter( 'upload_mimes', 'cc_mime_types' );										// Include alternate MIME types i.e SVG in the media uploader
+add_filter( 'login_display_language_dropdown', '__return_false' );					// Remove the language filter from the login screen
 
 remove_filter( 'wp_head', 'via_wpsetup_remove_recent_comments_style', 1 );			// Remove injected CSS for recent comments widget
 remove_action( 'wp_head', 'feed_links_extra', 3 );									// category feeds
