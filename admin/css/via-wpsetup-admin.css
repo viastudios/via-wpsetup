@@ -3,17 +3,48 @@
  * included in this file.
  */
 
-
 /* * * * * * * * * * * * * * * * * * * * * */
 /*              PLUGIN INSTALL             */
 /* * * * * * * * * * * * * * * * * * * * * */
 
 .plugin-install-php h1 {
-	font-weight: 600;
+  font-weight: 600;
 }
 
 .plugin-install-php h2 {
-	clear: initial;
-	margin: 2.5em 0 8px;
-	border-bottom: 1px solid #dddddd;
+  clear: initial;
+  margin: 2.5em 0 8px;
+  border-bottom: 1px solid #dddddd;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * */
+/*              ACF RELATIONSHIP             */
+/* * * * * * * * * * * * * * * * * * * * * * */
+
+.acf-field .acf-relationship .list {
+  height: 520px;
+}
+
+.acf-field .acf-relationship .list .acf-rel-label,
+.acf-field .acf-relationship .list .acf-rel-item,
+.acf-field .acf-relationship .list p {
+  padding: 10px 7px;
+  min-height: 115px;
+  display: flex;
+  align-items: center;
+}
+
+.acf-field .acf-relationship .list .acf-rel-item .thumbnail {
+  width: 120px;
+  height: 120px;
+  margin: 0px 10px 0 0;
+}
+
+.acf-field .acf-relationship .list .acf-rel-item .thumbnail img {
+  max-width: 120px;
+  max-height: 120px;
+}
+
+.acf-field .acf-relationship .selection .values .acf-icon {
+  top: auto;
 }
