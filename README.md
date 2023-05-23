@@ -17,6 +17,7 @@ Get rid of the bloated code WP by default puts in the header area and clean up t
 - Style the admin email confirm box (v1.0.6)
 - Remove the language select box from login page (v1.0.9)
 - Bugfix versions issue (v1.1.0)
+- Style the ACF relationship fields to have larger images (v1.1.1)
 
 ### Front end
 - Remove wordpress default WYSIWYG image dimensions (v1.0.0)
