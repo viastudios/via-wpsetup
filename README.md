@@ -26,3 +26,6 @@ Get rid of the bloated code WP by default puts in the header area and clean up t
 - Remove recent comments widget (v1.0.0)
 - Remove the WP version number from CSS and JS (v1.0.0)
 - Remove RSS version number (v1.0.0)
+
+# Bugfixes
+- E_ERROR fix for from updater when connecting to github (1.1.2)
