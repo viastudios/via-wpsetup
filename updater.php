@@ -46,33 +46,46 @@ class Github_Updater {
     }
 
     private function get_repository_info() {
-        if ( is_null( $this->github_response ) ) { // Do we have a response?
-            $request_uri = sprintf( 'https://api.github.com/repos/%s/%s/releases', $this->username, $this->repository ); // Build URI
-
-            if( $this->authorize_token ) { // Is there an access token?
-                $request_uri = add_query_arg( 'access_token', $this->authorize_token, $request_uri ); // Append it
+        if ( is_null( $this->github_response ) ) {
+            $request_uri = sprintf( 'https://api.github.com/repos/%s/%s/releases', $this->username, $this->repository );
+    
+            if ( $this->authorize_token ) {
+                $request_uri = add_query_arg( 'access_token', $this->authorize_token, $request_uri );
             }
-
-            $response = json_decode( wp_remote_retrieve_body( wp_remote_get( $request_uri ) ), true ); // Get JSON and parse it
-
-            if( is_array( $response ) ) { // If it is an array
-                $response = current( $response ); // Get the first item
+    
+            $response = wp_remote_get( $request_uri );
+            if ( is_wp_error( $response ) ) {
+                $this->github_response = array(); // prevent fatal error later
+                return;
             }
-
-            if( $this->authorize_token ) { // Is there an access token?
-                $response['zipball_url'] = add_query_arg( 'access_token', $this->authorize_token, $response['zipball_url'] ); // Update our zip url with token
+    
+            $body = wp_remote_retrieve_body( $response );
+            $data = json_decode( $body, true );
+    
+            if ( ! is_array( $data ) || empty( $data[0] ) ) {
+                $this->github_response = array(); // prevent fatal error later
+                return;
             }
-
+    
+            $release = $data[0];
+    
+            if ( $this->authorize_token ) {
+                $release['zipball_url'] = add_query_arg( 'access_token', $this->authorize_token, $release['zipball_url'] );
+            }
+    
             $readme_uri = sprintf( 'https://raw.githubusercontent.com/%s/%s/master/README.md', $this->username, $this->repository );
-
-            if( !empty($readme_uri) ){
-                $response['Readme'] = wp_remote_retrieve_body( wp_remote_get( $readme_uri ) );
+            $readme_response = wp_remote_get( $readme_uri );
+    
+            if ( ! is_wp_error( $readme_response ) ) {
+                $release['Readme'] = wp_remote_retrieve_body( $readme_response );
+            } else {
+                $release['Readme'] = 'README not found.';
             }
-
-            $this->github_response = $response; // Set it to our property
+    
+            $this->github_response = $release;
         }
     }
-
+    
     public function initialize() {
         add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'modify_transient' ), 10, 1 );
         add_filter( 'plugins_api', array( $this, 'plugin_popup' ), 10, 3);
@@ -87,22 +100,25 @@ class Github_Updater {
 
                 $this->get_repository_info(); // Get the repo info
 
-                $out_of_date = version_compare( $this->github_response['tag_name'], $checked[ $this->basename ], 'gt' ); // Check if we're out of date
-
-                if( $out_of_date ) {
-
-                    $new_files = $this->github_response['zipball_url']; // Get the ZIP
-
-                    $slug = current( explode('/', $this->basename ) ); // Create valid slug
-
-                    $plugin = array( // setup our plugin info
-                        'url' => $this->plugin["PluginURI"],
-                        'slug' => $slug,
-                        'package' => $new_files,
-                        'new_version' => $this->github_response['tag_name']
-                    );
-
-                    $transient->response[$this->basename] = (object) $plugin; // Return it in response
+                if (
+                    isset( $this->github_response['tag_name'] ) &&
+                    isset( $checked[ $this->basename ] )
+                ) {
+                    $out_of_date = version_compare( $this->github_response['tag_name'], $checked[ $this->basename ], 'gt' );
+                
+                    if ( $out_of_date ) {
+                        $new_files = $this->github_response['zipball_url'];
+                        $slug = current( explode('/', $this->basename ) );
+                
+                        $plugin = array(
+                            'url' => $this->plugin["PluginURI"],
+                            'slug' => $slug,
+                            'package' => $new_files,
+                            'new_version' => $this->github_response['tag_name']
+                        );
+                
+                        $transient->response[$this->basename] = (object) $plugin;
+                    }
                 }
             }
         }
