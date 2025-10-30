@@ -59,6 +59,7 @@ add_action( 'login_head', 'via_wpsetup_login_css' );								// Style the login p
 add_action( 'admin_head', 'via_wpsetup_admin_css' );								// Style the admin area
 add_action( 'wp_dashboard_setup', 'via_wpsetup_remove_dashboard_widgets' );			// Remove default widgets from dashboard
 add_action( 'wp_before_admin_bar_render', 'via_wpsetup_remove_admin_bar_links' );	// Remove item(s) from admin bar
+add_action( 'admin_head', 'via_hide_core_update_notifications_from_users', 1 );		// Hide core update notifications for non-admins
 
 add_filter( 'the_generator', 'via_wpsetup_rss_version' );							// Remove WP version from RSS
 add_filter( 'admin_footer_text', 'via_wpsetup_admin_footer' );						// We did this, let them know
@@ -178,4 +179,10 @@ function via_wpsetup_admin_login_url() {
 
 function via_wpsetup_admin_login_title() {
 	return get_option('blogname');
+}
+
+function via_hide_core_update_notifications_from_users() {
+	if ( ! current_user_can( 'update_core' ) ) {
+		remove_action( 'admin_notices', 'update_nag', 3 );
+	}
 }
