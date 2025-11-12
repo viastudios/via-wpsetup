@@ -100,6 +100,11 @@ body.login {
 	padding: 15px;
 	height: auto;
 	line-height: auto;
+	background: #3858e9;
+}
+
+.login.wp-core-ui .button.button-large:hover {
+	background: #2145e6;
 }
 
 .login #nav, .login #backtoblog {
