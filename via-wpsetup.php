@@ -57,16 +57,16 @@ register_deactivation_hook( __FILE__, 'deactivate_via_wpsetup' );
 
 add_action( 'login_head', 'via_wpsetup_login_css' );								// Style the login page
 add_action( 'admin_head', 'via_wpsetup_admin_css' );								// Style the admin area
-add_action( 'wp_dashboard_setup', 'via_wpsetup_remove_dashboard_widgets' );			// Remove default widgets from dashboard
-add_action( 'wp_before_admin_bar_render', 'via_wpsetup_remove_admin_bar_links' );	// Remove item(s) from admin bar
-add_action( 'admin_head', 'via_hide_core_update_notifications_from_users', 1 );		// Hide core update notifications for non-admins
+add_action( 'wp_dashboard_setup', 'via_wpsetup_dashboard_tweaks' );					// Remove default widgets from dashboard
+add_action( 'admin_bar_menu', 'via_wpsetup_admin_bar_tweaks', 25 );					// Remove item(s) from admin bar
+add_action( 'admin_init', 'via_admin_area_defaults', 1 );							// Hide core update nags and set colour scheme
+add_action( 'widgets_init', 'via_wpsetup_remove_recent_comments_style' );			// Remove injected CSS for recent comments widget
+add_action( 'admin_footer', 'via_wpsetup_admin_intercom' );							// Load Intercom in admin area
 
 add_filter( 'the_generator', 'via_wpsetup_rss_version' );							// Remove WP version from RSS
 add_filter( 'admin_footer_text', 'via_wpsetup_admin_footer' );						// We did this, let them know
 add_filter( 'login_headerurl', 'via_wpsetup_admin_login_url' );						// Changes admin logo link from wordpress.org to the site url
 add_filter( 'login_headertext', 'via_wpsetup_admin_login_title' );					// Changing the alt text on the logo to show your site name
-add_filter( 'admin_bar_menu', 'via_wpsetup_replace_howdy', 25 );					// Change howdy to make it look more professional
-add_filter( 'wp_head', 'via_wpsetup_remove_wp_widget_recent_comments_style', 1 );	// Remove injected css for recent comments widget
 add_filter( 'style_loader_src', 'via_wpsetup_remove_wp_ver_css_js', 9999 );			// Remove WP version from css
 add_filter( 'script_loader_src', 'via_wpsetup_remove_wp_ver_css_js', 9999 );		// Remove WP version from scripts
 add_filter( 'post_thumbnail_html', 'via_wpsetup_remove_img_dimensions', 10 );		// Filter out hard-coded width, height attributes on all images in WordPress. - https://gist.github.com/4557917 - for more information
@@ -75,7 +75,6 @@ add_filter( 'gallery_style', 'via_wpsetup_gallery_style' );							// Clean up ga
 add_filter( 'upload_mimes', 'cc_mime_types' );										// Include alternate MIME types i.e SVG in the media uploader
 add_filter( 'login_display_language_dropdown', '__return_false' );					// Remove the language filter from the login screen
 
-remove_filter( 'wp_head', 'via_wpsetup_remove_recent_comments_style', 1 );			// Remove injected CSS for recent comments widget
 remove_action( 'wp_head', 'feed_links_extra', 3 );									// category feeds
 remove_action( 'wp_head', 'feed_links', 2 );										// post and comment feeds
 remove_action( 'wp_head', 'rsd_link' );												// EditURI link
@@ -101,8 +100,8 @@ function via_wpsetup_remove_wp_ver_css_js( $src ) {
 	return $src;
 }
 
-function via_wpsetup_remove_dashboard_widgets() {
-	global $wp_meta_boxes;
+function via_wpsetup_dashboard_tweaks($wp_meta_boxes) {
+	// Remove unnecessary dashboard widgets
 	unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_quick_press']);
 	unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_incoming_links']);
 	unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_plugins']);
@@ -112,19 +111,35 @@ function via_wpsetup_remove_dashboard_widgets() {
 	unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary']);
 }
 
-function via_wpsetup_replace_howdy($wp_admin_bar) {
-	$my_account=$wp_admin_bar->get_node('my-account');
-	$newtitle = str_replace('Howdy,', 'Welcome', $my_account->title );
-	$wp_admin_bar->add_node(array(
-		'id' => 'my-account',
-		'title' => $newtitle,
-		)
-	);
+function via_wpsetup_admin_intercom() {
+	$current_user = wp_get_current_user();
+	echo '
+		<script>
+			window.intercomSettings = {
+				api_base: "https://api-iam.intercom.io",
+				app_id: "apevxw0z",
+				user_id: ' . json_encode($current_user->id) .',
+				name: ' . json_encode($current_user->name) .',
+				email: ' . json_encode($current_user->email) .',
+				created_at: ' . strtotime($current_user->created_at) .',
+			};
+		</script>
+		<script>
+			(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic("reattach_activator");ic("update",w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement("script");s.type="text/javascript";s.async=true;s.src="https://widget.intercom.io/widget/apevxw0z";var x=d.getElementsByTagName("script")[0];x.parentNode.insertBefore(s,x);};if(document.readyState==="complete"){l();}else if(w.attachEvent){w.attachEvent("onload",l);}else{w.addEventListener("load",l,false);}}})();
+		</script>
+	';
 }
 
-function via_wpsetup_remove_admin_bar_links() {
-	global $wp_admin_bar;
+function via_wpsetup_admin_bar_tweaks($wp_admin_bar) {
 	$wp_admin_bar->remove_menu('wp-logo'); // Remove Wordpress Logo From Admin Bar
+	$my_account = $wp_admin_bar->get_node( 'my-account' ); // Update Howdy Message
+	if ( $my_account ) {
+		$newtitle = str_replace( 'Howdy,', 'Welcome', $my_account->title );
+		$wp_admin_bar->add_node( array(
+			'id'    => 'my-account',
+			'title' => $newtitle,
+		) );
+	}
 }
 
 function via_wpsetup_remove_img_dimensions($html) {
@@ -148,12 +163,6 @@ function via_wpsetup_remove_recent_comments_style() {
 	}
 }
 
-function via_wpsetup_remove_wp_widget_recent_comments_style() { // remove injected CSS for recent comments widget
-	if ( has_filter('wp_head', 'wp_widget_recent_comments_style') ) {
-		remove_filter('wp_head', 'wp_widget_recent_comments_style' );
-	}
-}
-
 function via_wpsetup_login_css() {
 	wp_register_style( 'login-styles', plugins_url( 'admin/css/via-wpsetup-login.css', __FILE__ ) ); // Register my custom stylesheet
 	wp_enqueue_style( 'login-styles' ); // Load my custom stylesheet
@@ -165,7 +174,7 @@ function via_wpsetup_admin_css() {
 }
 
 function via_wpsetup_admin_footer() {
-	echo '<span id="footer-thankyou">Developed by <a href="//www.viastudios.co.uk/" target="_blank">Via Studios</a></span>. Built using <a href="http://upstatement.com/timber/" target="_blank">Timber</a> and <a href="http://sass-lang.com" target="_blank">Sass</a>.';
+	return '<span id="footer-thankyou">Developed by <a href="//www.viastudios.co.uk/" target="_blank">Via Studios</a></span>. Built using <a href="http://upstatement.com/timber/" target="_blank">Timber</a> and <a href="http://sass-lang.com" target="_blank">Sass</a>.';
 }
 
 function cc_mime_types($mimes) {
@@ -181,8 +190,17 @@ function via_wpsetup_admin_login_title() {
 	return get_option('blogname');
 }
 
-function via_hide_core_update_notifications_from_users() {
+function via_admin_area_defaults() {
 	if ( ! current_user_can( 'update_core' ) ) {
 		remove_action( 'admin_notices', 'update_nag', 3 );
 	}
+
+	// 1) Hide the "Admin Color Scheme" picker on profile screens
+	remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' ); // hides the UI
+
+	// 2) Always use the chosen scheme for all users
+	add_filter( 'get_user_option_admin_color', function ( $result, $option, $user ) {
+		$forced = 'modern';
+		return $forced;
+	}, 10, 3 );
 }
