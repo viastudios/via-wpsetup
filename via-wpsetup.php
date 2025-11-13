@@ -100,8 +100,9 @@ function via_wpsetup_remove_wp_ver_css_js( $src ) {
 	return $src;
 }
 
-function via_wpsetup_dashboard_tweaks($wp_meta_boxes) {
+function via_wpsetup_dashboard_tweaks() {
 	// Remove unnecessary dashboard widgets
+	global $wp_meta_boxes;
 	unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_quick_press']);
 	unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_incoming_links']);
 	unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_plugins']);
@@ -113,15 +114,16 @@ function via_wpsetup_dashboard_tweaks($wp_meta_boxes) {
 
 function via_wpsetup_admin_intercom() {
 	$current_user = wp_get_current_user();
+	var_dump($current_user);
 	echo '
 		<script>
 			window.intercomSettings = {
 				api_base: "https://api-iam.intercom.io",
 				app_id: "apevxw0z",
-				user_id: ' . json_encode($current_user->id) .',
-				name: ' . json_encode($current_user->name) .',
-				email: ' . json_encode($current_user->email) .',
-				created_at: ' . strtotime($current_user->created_at) .',
+				user_id: ' . json_encode($current_user->data->ID) .',
+				name: ' . json_encode($current_user->data->display_name) .',
+				email: ' . json_encode($current_user->data->user_email) .',
+				created_at: ' . strtotime($current_user->data->user_registered) .',
 			};
 		</script>
 		<script>
