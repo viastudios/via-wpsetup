@@ -61,7 +61,7 @@ add_action( 'wp_dashboard_setup', 'via_wpsetup_dashboard_tweaks' );					// Remov
 add_action( 'admin_bar_menu', 'via_wpsetup_admin_bar_tweaks', 25 );					// Remove item(s) from admin bar
 add_action( 'admin_init', 'via_admin_area_defaults', 1 );							// Hide core update nags and set colour scheme
 add_action( 'widgets_init', 'via_wpsetup_remove_recent_comments_style' );			// Remove injected CSS for recent comments widget
-add_action( 'admin_footer', 'via_wpsetup_admin_intercom' );							// Load Intercom in admin area
+add_action( 'admin_footer', ['Via_Foundation_Settings', 'output_intercom_script'] );// Output Intercom script in admin footer
 
 add_filter( 'the_generator', 'via_wpsetup_rss_version' );							// Remove WP version from RSS
 add_filter( 'admin_footer_text', 'via_wpsetup_admin_footer' );						// We did this, let them know
@@ -74,6 +74,7 @@ add_filter( 'get_avatar','via_wpsetup_remove_img_dimensions', 10 );					// Filte
 add_filter( 'gallery_style', 'via_wpsetup_gallery_style' );							// Clean up gallery output in wp, remove injected CSS
 add_filter( 'upload_mimes', 'cc_mime_types' );										// Include alternate MIME types i.e SVG in the media uploader
 add_filter( 'login_display_language_dropdown', '__return_false' );					// Remove the language filter from the login screen
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'via_foundations_settings_link' );			// Add settings link on plugins page
 
 remove_action( 'wp_head', 'feed_links_extra', 3 );									// category feeds
 remove_action( 'wp_head', 'feed_links', 2 );										// post and comment feeds
@@ -110,28 +111,6 @@ function via_wpsetup_dashboard_tweaks() {
 	unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_recent_comments']);
 	unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_primary']);
 	unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary']);
-}
-
-function via_wpsetup_admin_intercom() {
-	$current_user = wp_get_current_user();
-	$intercom_secret = 'DpIGyqqB4yq8wfiKrZ6699ExWHq1JFZA9M_cGRNu';
-	$user_hash = hash_hmac( 'sha256', $current_user->data->ID, $intercom_secret );
-	echo '
-		<script>
-			window.intercomSettings = {
-				api_base: "https://api-iam.intercom.io",
-				app_id: "apevxw0z",
-				user_id: '. json_encode($current_user->data->ID) .',
-				name: '. json_encode($current_user->data->display_name) .',
-				email: '. json_encode($current_user->data->user_email) .',
-				created_at: '. strtotime($current_user->data->user_registered) .',
-				user_hash: '. json_encode($user_hash) . '
-			};
-		</script>
-		<script>
-			(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic("reattach_activator");ic("update",w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement("script");s.type="text/javascript";s.async=true;s.src="https://widget.intercom.io/widget/apevxw0z";var x=d.getElementsByTagName("script")[0];x.parentNode.insertBefore(s,x);};if(document.readyState==="complete"){l();}else if(w.attachEvent){w.attachEvent("onload",l);}else{w.addEventListener("load",l,false);}}})();
-		</script>
-	';
 }
 
 function via_wpsetup_admin_bar_tweaks($wp_admin_bar) {
@@ -207,4 +186,15 @@ function via_admin_area_defaults() {
 		$forced = 'modern';
 		return $forced;
 	}, 10, 3 );
+}
+
+function via_foundations_settings_link( $links ) {
+    $settings_url = admin_url( 'options-general.php?page=foundations' );
+    $settings_link = '<a href="' . esc_url( $settings_url ) . '">Settings</a>';
+    array_unshift( $links, $settings_link ); // put the link first
+    return $links;
+}
+
+if ( is_admin() ) {
+	require_once plugin_dir_path( __FILE__ ) . 'admin/inc/class-via-intercom-settings.php';
 }
