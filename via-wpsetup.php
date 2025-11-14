@@ -58,7 +58,7 @@ register_deactivation_hook( __FILE__, 'deactivate_via_wpsetup' );
 add_action( 'login_head', 'via_wpsetup_login_css' );								// Style the login page
 add_action( 'admin_head', 'via_wpsetup_admin_css' );								// Style the admin area
 add_action( 'wp_dashboard_setup', 'via_wpsetup_dashboard_tweaks' );					// Remove default widgets from dashboard
-add_action( 'admin_bar_menu', 'via_wpsetup_admin_bar_tweaks', 25 );					// Remove item(s) from admin bar
+add_action( 'admin_bar_menu', 'via_wpsetup_admin_bar_tweaks', 9992 );					// Remove item(s) from admin bar
 add_action( 'admin_init', 'via_admin_area_defaults', 1 );							// Hide core update nags and set colour scheme
 add_action( 'widgets_init', 'via_wpsetup_remove_recent_comments_style' );			// Remove injected CSS for recent comments widget
 add_action( 'admin_footer', ['Via_Foundation_Settings', 'output_intercom_script'] );// Output Intercom script in admin footer
