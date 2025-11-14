@@ -114,16 +114,18 @@ function via_wpsetup_dashboard_tweaks() {
 
 function via_wpsetup_admin_intercom() {
 	$current_user = wp_get_current_user();
-	var_dump($current_user);
+	$intercom_secret = 'DpIGyqqB4yq8wfiKrZ6699ExWHq1JFZA9M_cGRNu';
+	$user_hash = hash_hmac( 'sha256', $current_user->data->ID, $intercom_secret );
 	echo '
 		<script>
 			window.intercomSettings = {
 				api_base: "https://api-iam.intercom.io",
 				app_id: "apevxw0z",
-				user_id: ' . json_encode($current_user->data->ID) .',
-				name: ' . json_encode($current_user->data->display_name) .',
-				email: ' . json_encode($current_user->data->user_email) .',
-				created_at: ' . strtotime($current_user->data->user_registered) .',
+				user_id: '. json_encode($current_user->data->ID) .',
+				name: '. json_encode($current_user->data->display_name) .',
+				email: '. json_encode($current_user->data->user_email) .',
+				created_at: '. strtotime($current_user->data->user_registered) .',
+				user_hash: '. json_encode($user_hash) . '
 			};
 		</script>
 		<script>
