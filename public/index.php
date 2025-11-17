@@ -1,6 +1,6 @@
 <?php // Silence is golden
 
-add_action( 'login_head', 'via_wpsetup_login_css' );								// Style the login page
+add_action( 'login_enqueue_scripts', 'via_wpsetup_login_css' );						// Style the login page
 add_action( 'widgets_init', 'via_wpsetup_remove_recent_comments_style' );			// Remove injected CSS for recent comments widget
 add_action( 'wp_footer', 'via_wpsetup_usersnap' );									// Add Usersnap feedback tool to footer
 
@@ -61,8 +61,7 @@ function via_wpsetup_remove_recent_comments_style() {
 }
 
 function via_wpsetup_login_css() {
-	wp_register_style( 'login-styles', plugins_url( 'admin/css/via-wpsetup-login.css', __FILE__ ) ); // Register my custom stylesheet
-	wp_enqueue_style( 'login-styles' ); // Load my custom stylesheet
+	wp_enqueue_style( 'login-styles', plugins_url( 'public/css/via-wpsetup-login.css', basename( dirname( __FILE__, 2 ) ) . '/' . basename( dirname( __FILE__ ) ) ) );
 }
 
 function via_wpsetup_login_url() {
