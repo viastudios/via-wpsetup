@@ -18,6 +18,11 @@ Get rid of the bloated code WP by default puts in the header area and clean up t
 - Remove the language select box from login page (v1.0.9)
 - Bugfix versions issue (v1.1.0)
 - Style the ACF relationship fields to have larger images (v1.1.1)
+- Remove WP version nag for non-admins (v1.1.3)
+- Force users to 'Modern' colour palette (v2.0)
+- Intercom added (v2.0)
+- Refactor code (v2.0)
+- Add settings page to house API keys etc. (v2.0)
 
 ### Front end
 - Remove wordpress default WYSIWYG image dimensions (v1.0.0)
@@ -26,6 +31,9 @@ Get rid of the bloated code WP by default puts in the header area and clean up t
 - Remove recent comments widget (v1.0.0)
 - Remove the WP version number from CSS and JS (v1.0.0)
 - Remove RSS version number (v1.0.0)
+- Refactor code (v2.0)
+- Admin user only Usersnap integration (v2.0)
 
 # Bugfixes
-- E_ERROR fix for from updater when connecting to github (1.1.2)
+- E_ERROR fix for from updater when connecting to github (v1.1.2)
+- WP 6.6 broke the ‘Howdy’ rewrite this update addresses that (v2.0)
