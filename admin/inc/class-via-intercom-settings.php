@@ -47,8 +47,8 @@ class Via_Foundation_Settings {
 		);
 
 		add_settings_section(
-			'via_foundations_setting_section',
-			'Settings',
+			'via_foundations_intercom_section',
+			'Intercom Settings',
 			null,
 			'foundations'
 		);
@@ -58,14 +58,46 @@ class Via_Foundation_Settings {
 			'Intercom Secret',
 			array( $this, 'intercom_secret_callback' ),
 			'foundations',
-			'via_foundations_setting_section'
+			'via_foundations_intercom_section'
 		);
+
+		add_settings_section(
+			'via_foundations_usersnap_section',
+			'Usersnap Settings',
+			null,
+			'foundations'
+		);
+
+		add_settings_field(
+			'usersnap_enabled',
+			'Usersnap Enabled',
+			array( $this, 'usersnap_enabled_callback' ),
+			'foundations',
+			'via_foundations_usersnap_section'
+		);
+
+		add_settings_field(
+			'usersnap_apikey',
+			'Usersnap Space API Key',
+			array( $this, 'usersnap_apikey_callback' ),
+			'foundations',
+			'via_foundations_usersnap_section'
+		);	
 	}
 
 	public function sanitize( $input ) {
 		$new_input = array();
+
+		// Intercom
 		if ( isset( $input['intercom_secret'] ) ) {
 			$new_input['intercom_secret'] = sanitize_text_field( $input['intercom_secret'] );
+		}
+		// Usersnap enabled (checkbox: not present when unchecked)
+		$new_input['usersnap_enabled'] = isset( $input['usersnap_enabled'] ) ? 1 : 0;
+
+		// Usersnap API key
+		if ( isset( $input['usersnap_apikey'] ) ) {
+			$new_input['usersnap_apikey'] = sanitize_text_field( $input['usersnap_apikey'] );
 		}
 		return $new_input;
 	}
@@ -74,6 +106,21 @@ class Via_Foundation_Settings {
 		printf(
 			'<input class="regular-text" type="password" name="via_foundations[intercom_secret]" id="intercom_secret" value="%s" autocomplete="new-password">',
 			isset( $this->options['intercom_secret'] ) ? esc_attr( $this->options['intercom_secret'] ) : ''
+		);
+	}
+
+	public function usersnap_enabled_callback() {
+		$checked = isset( $this->options['usersnap_enabled'] ) && $this->options['usersnap_enabled'] ? 'checked' : '';
+		printf(
+			'<input type="checkbox" name="via_foundations[usersnap_enabled]" id="usersnap_enabled" value="1" %s>',
+			$checked
+		);
+	}
+
+	public function usersnap_apikey_callback() {
+		printf(
+			'<input class="regular-text" type="text" name="via_foundations[usersnap_apikey]" id="usersnap_apikey" value="%s">',
+			isset( $this->options['usersnap_apikey'] ) ? esc_attr( $this->options['usersnap_apikey'] ) : ''
 		);
 	}
 

@@ -2,6 +2,7 @@
 
 add_action( 'login_head', 'via_wpsetup_login_css' );								// Style the login page
 add_action( 'widgets_init', 'via_wpsetup_remove_recent_comments_style' );			// Remove injected CSS for recent comments widget
+add_action( 'wp_footer', 'via_wpsetup_usersnap' );									// Add Usersnap feedback tool to footer
 
 add_filter( 'style_loader_src', 'via_wpsetup_remove_wp_ver_css_js', 9999 );			// Remove WP version from css
 add_filter( 'script_loader_src', 'via_wpsetup_remove_wp_ver_css_js', 9999 );		// Remove WP version from scripts
@@ -70,4 +71,28 @@ function via_wpsetup_login_url() {
 
 function via_wpsetup_login_title() {
 	return get_option('blogname');
+}
+
+function via_wpsetup_usersnap() {
+	// Get usersnap_enabled option and usersnap_identifier option
+	$options = get_option( 'via_foundations' );
+	$usersnap_enabled = isset( $options['usersnap_enabled'] ) ? $options['usersnap_enabled'] : false;
+	$usersnap_apikey = isset( $options['usersnap_apikey'] ) ? $options['usersnap_apikey'] : '';
+	// If usersnap is enabled and identifier is set
+	if ( current_user_can( 'manage_options' ) && is_user_logged_in() && $usersnap_enabled && !empty( $usersnap_apikey ) ) {
+	?>
+	<script>
+		window.onUsersnapLoad = function(api) { api.init({
+			user: {
+				userId: '<?php echo esc_js( get_current_user_id() ); ?>',
+				email: '<?php echo esc_js( wp_get_current_user()->user_email ); ?>'
+			}
+		}); };
+		var script = document.createElement('script');
+		script.defer = 1;
+		script.src = 'https://widget.usersnap.com/global/load/<?php echo esc_js( $usersnap_apikey ); ?>?onload=onUsersnapLoad';
+		document.getElementsByTagName('head')[0].appendChild(script);
+	</script>
+	<?php
+	}
 }
