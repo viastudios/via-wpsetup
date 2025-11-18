@@ -3,6 +3,7 @@
 add_action( 'login_enqueue_scripts', 'via_wpsetup_login_css' );						// Style the login page
 add_action( 'widgets_init', 'via_wpsetup_remove_recent_comments_style' );			// Remove injected CSS for recent comments widget
 add_action( 'wp_footer', 'via_wpsetup_usersnap' );									// Add Usersnap feedback tool to footer
+add_action( 'wp_enqueue_scripts', 'via_wpsetup_admin_toolbar' );					// Style the frontend admin toolbar
 
 add_filter( 'style_loader_src', 'via_wpsetup_remove_wp_ver_css_js', 9999 );			// Remove WP version from css
 add_filter( 'script_loader_src', 'via_wpsetup_remove_wp_ver_css_js', 9999 );		// Remove WP version from scripts
@@ -94,4 +95,8 @@ function via_wpsetup_usersnap() {
 	</script>
 	<?php
 	}
+}
+
+function via_wpsetup_admin_toolbar() {
+	wp_enqueue_style( 'admin-bar-color', admin_url('/css/colors/modern/colors.min.css'), array('admin-bar') );
 }
