@@ -23,6 +23,7 @@ Get rid of the bloated code WP by default puts in the header area and clean up t
 - Intercom added (v2.0)
 - Refactor code (v2.0)
 - Add settings page to house API keys etc. (v2.0)
+- Refactor code so admin bar customisation applies to front and back end (v2.0.1)
 
 ### Front end
 - Remove wordpress default WYSIWYG image dimensions (v1.0.0)
@@ -33,6 +34,7 @@ Get rid of the bloated code WP by default puts in the header area and clean up t
 - Remove RSS version number (v1.0.0)
 - Refactor code (v2.0)
 - Admin user only Usersnap integration (v2.0)
+- Force 'modern' theme on admin bar (v2.0.1)
 
 # Bugfixes
 - E_ERROR fix for from updater when connecting to github (v1.1.2)

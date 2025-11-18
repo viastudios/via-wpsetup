@@ -4,7 +4,7 @@
  * Plugin Name:       Foundations
  * Plugin URI:        https://github.com/viastudios/via-wpsetup/
  * Description:       Sets Wordpress up in a clean and presentable state.
- * Version:           2.0.0
+ * Version:           2.0.1
  * Author:            Via Studios
  * Author URI:        https://viastudios.co.uk/
  * Text Domain:       via-wpsetup
