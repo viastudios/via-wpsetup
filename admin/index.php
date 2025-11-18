@@ -2,7 +2,6 @@
 // Admin area actions
 add_action( 'admin_head', 'via_wpsetup_admin_css' );								    	// Style the admin area
 add_action( 'admin_init', 'via_wpsetup_admin_defaults', 1 );						    	// Hide core update nags and set colour scheme
-add_action( 'admin_bar_menu', 'via_wpsetup_admin_bar', 9992 );				            	// Remove item(s) from admin bar
 add_action( 'wp_dashboard_setup', 'via_wpsetup_dashboard' );					        	// Remove default widgets from dashboard
 add_action( 'admin_footer', ['Via_Foundation_Settings', 'output_intercom_script'] );    	// Output Intercom script in admin footer
 
@@ -31,21 +30,6 @@ function via_wpsetup_admin_defaults() {
 		$forced = 'modern';
 		return $forced;
 	}, 10, 3 );
-}
-
-function via_wpsetup_admin_bar($wp_admin_bar) {
-    // Remove Wordpress Logo From Admin Bar
-	$wp_admin_bar->remove_menu('wp-logo'); 
-
-    // Update Howdy Message
-	$my_account = $wp_admin_bar->get_node( 'my-account' ); 
-	if ( $my_account ) {
-		$newtitle = str_replace( 'Howdy,', 'Welcome', $my_account->title );
-		$wp_admin_bar->add_node( array(
-			'id'    => 'my-account',
-			'title' => $newtitle,
-		) );
-	}
 }
 
 function via_wpsetup_dashboard() {

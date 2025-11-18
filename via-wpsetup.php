@@ -61,3 +61,21 @@ if ( is_admin() ) {
 } else {
 	require_once plugin_dir_path( __FILE__ ) . 'public/index.php';
 }
+
+// Apply to front and back end
+add_action( 'admin_bar_menu', 'via_wpsetup_admin_bar', 9992 );	// Remove item(s) from admin bar
+
+function via_wpsetup_admin_bar($wp_admin_bar) {
+	// Remove Wordpress Logo From Admin Bar
+	$wp_admin_bar->remove_menu('wp-logo'); 
+
+	// Update Howdy Message
+	$my_account = $wp_admin_bar->get_node( 'my-account' ); 
+	if ( $my_account ) {
+		$newtitle = str_replace( 'Howdy,', 'Welcome', $my_account->title );
+		$wp_admin_bar->add_node( array(
+			'id'    => 'my-account',
+			'title' => $newtitle,
+		) );
+	}
+}
