@@ -98,5 +98,14 @@ function via_wpsetup_usersnap() {
 }
 
 function via_wpsetup_admin_toolbar() {
-	wp_enqueue_style( 'admin-bar-color', admin_url('/css/colors/modern/colors.min.css'), array('admin-bar') );
+    if ( ! is_user_logged_in() || ! is_admin_bar_showing() ) {
+        return;
+    }
+
+    wp_enqueue_style(
+        'via-admin-bar-front',
+        plugins_url( 'css/via-admin-bar.css', __FILE__ ),
+        array( 'admin-bar' ), // make sure it loads after core admin bar styles
+        null
+    );
 }
