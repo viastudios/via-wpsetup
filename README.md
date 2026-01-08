@@ -35,6 +35,7 @@ Get rid of the bloated code WP by default puts in the header area and clean up t
 - Refactor code (v2.0)
 - Admin user only Usersnap integration (v2.0)
 - Force 'modern' theme on admin bar (v2.0.1)
+- Force admin verification screen to pull custom width and button styles (v2.0.2)
 
 # Bugfixes
 - E_ERROR fix for from updater when connecting to github (v1.1.2)
