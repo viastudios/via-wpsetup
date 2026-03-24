@@ -40,3 +40,4 @@ Get rid of the bloated code WP by default puts in the header area and clean up t
 # Bugfixes
 - E_ERROR fix for from updater when connecting to github (v1.1.2)
 - WP 6.6 broke the ‘Howdy’ rewrite this update addresses that (v2.0)
+- Correct the admin stylesheet path (v2.0.4)
