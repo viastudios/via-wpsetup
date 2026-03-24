@@ -12,7 +12,7 @@ add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'via_wpsetup_set
 
 function via_wpsetup_admin_css() {
     // Register and enqueue custom admin stylesheet
-	wp_register_style( 'custom-admin-styles', plugins_url( 'admin/css/via-wpsetup-admin.css', __FILE__ ) );
+	wp_register_style( 'custom-admin-styles', plugins_url( 'css/via-wpsetup-admin.css', __FILE__ ) );
 	wp_enqueue_style( 'custom-admin-styles' );
 }
 
