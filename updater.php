@@ -49,32 +49,29 @@ class Github_Updater {
         if ( is_null( $this->github_response ) ) {
             $request_uri = sprintf( 'https://api.github.com/repos/%s/%s/releases', $this->username, $this->repository );
     
+            $request_args = array();
             if ( $this->authorize_token ) {
-                $request_uri = add_query_arg( 'access_token', $this->authorize_token, $request_uri );
+                $request_args['headers'] = array( 'Authorization' => 'Bearer ' . $this->authorize_token );
             }
-    
-            $response = wp_remote_get( $request_uri );
+
+            $response = wp_remote_get( $request_uri, $request_args );
             if ( is_wp_error( $response ) ) {
                 $this->github_response = array(); // prevent fatal error later
                 return;
             }
-    
+
             $body = wp_remote_retrieve_body( $response );
             $data = json_decode( $body, true );
-    
+
             if ( ! is_array( $data ) || empty( $data[0] ) ) {
                 $this->github_response = array(); // prevent fatal error later
                 return;
             }
-    
+
             $release = $data[0];
-    
-            if ( $this->authorize_token ) {
-                $release['zipball_url'] = add_query_arg( 'access_token', $this->authorize_token, $release['zipball_url'] );
-            }
-    
+
             $readme_uri = sprintf( 'https://raw.githubusercontent.com/%s/%s/master/README.md', $this->username, $this->repository );
-            $readme_response = wp_remote_get( $readme_uri );
+            $readme_response = wp_remote_get( $readme_uri, $request_args );
     
             if ( ! is_wp_error( $readme_response ) ) {
                 $release['Readme'] = wp_remote_retrieve_body( $readme_response );
@@ -141,8 +138,8 @@ class Github_Updater {
                 $plugin = array(
                     'name'              => $this->plugin["Name"],
                     'slug'              => $this->basename,
-                    'requires'          => '4.0',
-                    'tested'            => '4.9.4',
+                    'requires'          => '5.0',
+                    'tested'            => get_bloginfo( 'version' ),
                     'added'             => '2018-02-20',
                     'version'           => $this->github_response['tag_name'],
                     'author'            => $this->plugin["AuthorName"],

@@ -122,3 +122,11 @@ body.login {
 .interim-login.login #login #login_error {
 	width: auto;
 }
+
+#wpu-2fa-qr {
+	word-spacing: -2px;
+}
+
+#wpu-two-factor-codes input[type=checkbox] {
+    background: var(--wp-admin-theme-color);
+}
