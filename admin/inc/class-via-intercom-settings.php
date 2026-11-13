@@ -128,10 +128,10 @@ class Via_Foundation_Settings {
         $current_user = wp_get_current_user();
         $options = get_option( 'via_foundations' );
         $intercom_secret = isset($options['intercom_secret']) ? $options['intercom_secret'] : '';
-        $user_hash = hash_hmac( 'sha256', $current_user->data->ID, $intercom_secret );
 		if ( empty( $intercom_secret ) ) {
 			return; // Do not output script if secret is not set
 		}
+        $user_hash = hash_hmac( 'sha256', $current_user->data->ID, $intercom_secret );
         ?>
         <script>
             window.intercomSettings = {
