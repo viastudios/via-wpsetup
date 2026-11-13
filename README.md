@@ -24,6 +24,7 @@ Get rid of the bloated code WP by default puts in the header area and clean up t
 - Refactor code (v2.0)
 - Add settings page to house API keys etc. (v2.0)
 - Refactor code so admin bar customisation applies to front and back end (v2.0.1)
+- Restrict SVG uploads to admins, use Authorization header for GitHub updater auth, update vendored Parsedown (v2.0.5)
 
 ### Front end
 - Remove wordpress default WYSIWYG image dimensions (v1.0.0)
@@ -41,3 +42,4 @@ Get rid of the bloated code WP by default puts in the header area and clean up t
 - E_ERROR fix for from updater when connecting to github (v1.1.2)
 - WP 6.6 broke the ‘Howdy’ rewrite this update addresses that (v2.0)
 - Correct the admin stylesheet path (v2.0.4)
+- Correct the login stylesheet path (v2.0.5)
