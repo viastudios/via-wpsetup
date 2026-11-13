@@ -127,6 +127,6 @@ body.login {
 	word-spacing: -2px;
 }
 
-#wpu-two-factor-codes input[type=checkbox] {
+#wpu-two-factor-codes input[type=checkbox]:checked {
     background: var(--wp-admin-theme-color);
 }
