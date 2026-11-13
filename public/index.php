@@ -62,7 +62,7 @@ function via_wpsetup_remove_recent_comments_style() {
 }
 
 function via_wpsetup_login_css() {
-	wp_enqueue_style( 'login-styles', plugins_url( 'public/css/via-wpsetup-login.css', basename( dirname( __FILE__, 2 ) ) . '/' . basename( dirname( __FILE__ ) ) ) );
+	wp_enqueue_style( 'login-styles', plugins_url( 'css/via-wpsetup-login.css', __FILE__ ) );
 }
 
 function via_wpsetup_login_url() {
