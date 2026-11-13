@@ -6,7 +6,7 @@ add_action( 'wp_dashboard_setup', 'via_wpsetup_dashboard' );					        	// Rem
 add_action( 'admin_footer', ['Via_Foundation_Settings', 'output_intercom_script'] );    	// Output Intercom script in admin footer
 
 // Admin area filters
-add_filter( 'upload_mimes', 'cc_mime_types' );												// Include alternate MIME types i.e SVG in the media uploader
+add_filter( 'upload_mimes', 'via_wpsetup_mime_types' );									// Include alternate MIME types i.e SVG in the media uploader (admins only, see function)
 add_filter( 'admin_footer_text', 'via_wpsetup_admin_footer' );						    	// We did this, let them know
 add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'via_wpsetup_settings' );	// Add settings link on plugins page
 
@@ -49,8 +49,11 @@ function via_wpsetup_admin_footer() {
 	return '<span id="footer-thankyou">Developed by <a href="//www.viastudios.co.uk/" target="_blank">Via Studios</a></span>. Built using <a href="http://upstatement.com/timber/" target="_blank">Timber</a> and <a href="http://sass-lang.com" target="_blank">Sass</a>.';
 }
 
-function cc_mime_types($mimes) {
-	$mimes['svg'] = 'image/svg+xml';
+function via_wpsetup_mime_types($mimes) {
+	// SVGs can embed scripts/XSS payloads, so only allow trusted admins to upload them.
+	if ( current_user_can( 'manage_options' ) ) {
+		$mimes['svg'] = 'image/svg+xml';
+	}
 	return $mimes;
 }
 
